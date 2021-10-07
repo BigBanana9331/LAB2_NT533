@@ -1,0 +1,32 @@
+version: "2.4"
+
+services:
+  node0:
+    image: iperf-server
+    container_name: node0
+    networks:
+      iot_net:
+        ipv4_address: 172.30.0.10
+  node1:
+    image: iperf-client
+    container_name: node1
+    command: iperf -c 172.30.0.10 -u -n 100
+    networks:
+      iot_net:
+        ipv4_address: 172.30.0.11
+  node2:
+    image: iperf-client
+    container_name: node2
+    command: iperf -c 172.30.0.10 -u -n 100
+    networks:
+      iot_net:
+        ipv4_address: 172.30.0.12
+  
+
+networks:
+  iot_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.0.0/24
